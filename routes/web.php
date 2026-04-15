@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LendingController;
  
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -15,12 +16,6 @@ Route::middleware('guest')->group(function () {
 });
  
 Route::middleware('auth')->group(function () {
-
-    Route::middleware('isStaff')->group(function () {
-        Route::get('/operator/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('operator.dashboard');
-    });
  
     Route::middleware('isAdmin')->group(function () {
         Route::get('/admin/dashboard', function () {
@@ -44,7 +39,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/export-data-operator', [UserController::class, 'exportOperator'])->name('export.operator');
     });
  
-
+    Route::middleware('isStaff')->group(function () {
+        Route::get('/staff/dashboard', function () {
+            return view('operator.dashboard');
+        })->name('staff.dashboard');
+ 
+        Route::get('/staff/items', [ItemController::class, 'indexStaff'])->name('staff.items.index');
+ 
+        Route::get('/staff/lendings', [LendingController::class, 'index'])->name('staff.lendings.index');
+        Route::post('/staff/lendings', [LendingController::class, 'store'])->name('lending.store');
+        Route::patch('/staff/lendings/{id}/return', [LendingController::class, 'updateReturn'])->name('lending.return');
+        Route::delete('/staff/lendings/{id}', [LendingController::class, 'destroy'])->name('lending.destroy');
+        Route::get('/staff/lendings/export', [LendingController::class, 'exportExcel'])->name('lending.export');
+ 
+        Route::get('/staff/profile/edit', [UserController::class, 'editStaff'])->name('staff.profile.edit');
+        Route::patch('/staff/profile/update', [UserController::class, 'updateStaff'])->name('staff.profile.update');
+    });
  
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

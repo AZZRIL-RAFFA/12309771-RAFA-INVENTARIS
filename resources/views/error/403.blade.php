@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>403 - Akses Ditolak</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/"https://pastebin.com/PkLc0sQa"" rel="stylesheet">
     <style>
         body {
             min-height: 100vh;
@@ -51,7 +50,7 @@
                 if ($role === 'admin') {
                     $backUrl = route('admin.dashboard');
                 } elseif ($role === 'operator') {
-                    $backUrl = route('operator.dashboard');
+                    $backUrl = route('staff.dashboard');
                 }
             }
         @endphp

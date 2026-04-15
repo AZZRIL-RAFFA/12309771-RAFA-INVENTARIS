@@ -57,13 +57,26 @@
         box-shadow: none;
         background-color: #ff4d4d;
         color: white;
+    }
 </style>
 
 <div class="container-fluid py-4 px-lg-5">
+    @if (session('success'))
+    <div class="alert alert-success border-0 shadow-sm mb-4" style="border-radius: 12px;">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    @if ($errors->any())
+    <div class="alert alert-danger border-0 shadow-sm mb-4" style="border-radius: 12px;">
+        {{ $errors->first() }}
+    </div>
+    @endif
+
     @if (session('success_password'))
     <div class="alert alert-success border-0 shadow-sm mb-4 d-flex align-items-center" style="border-radius: 12px;">
         <i class="bi bi-shield-lock-fill me-3 fs-4"></i>
-    .btn-delete-trigger:hover { background-color: #e60000; color: white; }
+        <div>
             <strong class="d-block">Account Created!</strong>
             <span>{{ session('success_password') }}</span>
         </div>
@@ -116,44 +129,12 @@
                                     <button class="btn btn-action btn-create text-white" data-bs-toggle="modal" data-bs-target="#editModal{{ $operator->id }}">
                                         Edit
                                     </button>
-                                    <button class="btn btn-action btn-delete text-white" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $operator->id }}">
+                                    <button class="btn btn-action btn-delete text-white" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $operator->id }}">
                                         Delete
                                     </button>
                                 </div>
                             </td>
                         </tr>
-
-                        <div class="modal fade" id="editModal{{ $operator->id }}" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content border-0 shadow">
-                                    <div class="modal-header border-0 pt-4 px-4">
-                                        <h5 class="fw-bold">Edit Account</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <form action="{{ route('admin.users.update', $operator->id) }}" method="POST">
-                                        @csrf @method('PUT')
-                                        <div class="modal-body px-4">
-                                            <div class="mb-3">
-                                                <label class="small fw-bold mb-1">Name</label>
-                                                <input type="text" name="name" class="form-control bg-light border-0 py-2" value="{{ $operator->name }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="small fw-bold mb-1">Email</label>
-                                                <input type="email" name="email" class="form-control bg-light border-0 py-2" value="{{ $operator->email }}" required>
-                                            </div>
-                                            <div class="mb-1">
-                                                <label class="small fw-bold mb-1 text-primary">New Password (optional)</label>
-                                                <input type="password" name="new_password" class="form-control bg-light border-0 py-2" placeholder="Leave blank to keep current">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer border-0 pb-4 px-4">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-create px-4">Update Account</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         @empty
                         <tr>
                             <td colspan="4" class="text-center py-5">
@@ -168,6 +149,61 @@
         </div>
     </div>
 </div>
+
+@foreach($users as $operator)
+<div class="modal fade" id="editModal{{ $operator->id }}" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pt-4 px-4">
+                <h5 class="fw-bold">Edit Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('admin.users.update', $operator->id) }}" method="POST">
+                @csrf @method('PUT')
+                <div class="modal-body px-4">
+                    <div class="mb-3">
+                        <label class="small fw-bold mb-1">Name</label>
+                        <input type="text" name="name" class="form-control bg-light border-0 py-2" value="{{ $operator->name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small fw-bold mb-1">Email</label>
+                        <input type="email" name="email" class="form-control bg-light border-0 py-2" value="{{ $operator->email }}" required>
+                    </div>
+                    <div class="mb-1">
+                        <label class="small fw-bold mb-1 text-primary">New Password (optional)</label>
+                        <input type="password" name="new_password" class="form-control bg-light border-0 py-2" placeholder="Leave blank to keep current">
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pb-4 px-4">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-create px-4">Update Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal{{ $operator->id }}" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body p-4 text-center">
+                <div class="mb-3">
+                    <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3.5rem;"></i>
+                </div>
+                <h5 class="fw-bold">Delete Account?</h5>
+                <p class="text-muted small">This action cannot be undone. All data associated with this operator will be removed.</p>
+                <form action="{{ route('admin.users.destroy', $operator->id) }}" method="POST">
+                    @csrf @method('DELETE')
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-delete fw-bold py-2">Confirm Delete</button>
+                        <button type="button" class="btn btn-light py-2" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 
 <div class="modal fade" id="addAccountModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
     <div class="modal-dialog modal-dialog-centered">
@@ -201,40 +237,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-body p-4 text-center">
-                <div class="mb-3">
-                    <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3.5rem;"></i>
-                </div>
-                <h5 class="fw-bold">Delete Account?</h5>
-                <p class="text-muted small">This action cannot be undone. All data associated with this operator will be removed.</p>
-                <form id="deleteForm" method="POST">
-                    @csrf @method('DELETE')
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-delete fw-bold py-2">Confirm Delete</button>
-                        <button type="button" class="btn btn-light py-2" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-
-        $('.btn-delete').on('click', function() {
-            const id = $(this).data('id');
-            const actionUrl = `/admin/users/${id}`;
-            
-            $('#deleteForm').attr('action', actionUrl);
-            deleteModal.show();
-        });
-    });
+    // Delete uses per-row modal action, so no dynamic URL injection is needed.
 </script>
 @endpush
 @endsection

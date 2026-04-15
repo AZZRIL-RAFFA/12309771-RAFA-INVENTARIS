@@ -31,7 +31,7 @@ class AuthController extends Controller
             }
  
             if ($role == 'operator') {
-                return redirect()->intended('/operator/dashboard');
+                return redirect()->intended('/staff/dashboard');
             }
  
             return redirect('/');

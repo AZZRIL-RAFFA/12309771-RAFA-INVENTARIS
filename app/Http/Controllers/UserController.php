@@ -93,7 +93,7 @@ class UserController extends Controller
     public function editStaff()
     {
         $user = Auth::user();
-        return view('staff.users.index', compact('user'));
+        return view('operator.users.index', compact('user'));
     }
  
     public function updateStaff(Request $request)

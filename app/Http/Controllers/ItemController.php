@@ -38,7 +38,7 @@ class ItemController extends Controller
     public function indexStaff()
     {
         $items = Item::with('category')->get();
-        return view('staff.items.index', compact('items'));
+        return view('operator.items.index', compact('items'));
     }
  
     public function exportExcel()
@@ -97,6 +97,11 @@ class ItemController extends Controller
 
         if ($totalRepair > $newTotal) {
             return redirect()->back()->with('error', 'Update gagal: jumlah repair tidak boleh melebihi total item.');
+        }
+
+        $currentLending = (int) ($item->lending ?? 0);
+        if (($currentLending + $totalRepair) > $newTotal) {
+            return redirect()->back()->with('error', 'Update gagal: total item tidak boleh lebih kecil dari jumlah lending + repair saat ini.');
         }
  
         $item->update([
