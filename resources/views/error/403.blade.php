@@ -50,8 +50,8 @@
                 $role = auth()->user()->role;
                 if ($role === 'admin') {
                     $backUrl = route('admin.dashboard');
-                } elseif ($role === 'staff') {
-                    $backUrl = route('staff.dashboard');
+                } elseif ($role === 'operator') {
+                    $backUrl = route('operator.dashboard');
                 }
             }
         @endphp

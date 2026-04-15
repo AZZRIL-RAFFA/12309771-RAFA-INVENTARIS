@@ -43,7 +43,7 @@ class ItemController extends Controller
  
     public function exportExcel()
     {
-        return Excel::download(new ItemsExport, 'items.xlsx');
+        return Excel::download(new ItemsExport, 'items.csv');
     }
  
    public function store(Request $request)

@@ -23,10 +23,10 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Staff Wikrama',
-            'email' => 'staff@gmail.com',
-            'password' => Hash::make('staff123'),
-            'role' => 'staff',
+            'name' => 'Operator Wikrama',
+            'email' => 'operator@gmail.com',
+            'password' => Hash::make('operator123'),
+            'role' => 'operator',
         ]);
     }
 }

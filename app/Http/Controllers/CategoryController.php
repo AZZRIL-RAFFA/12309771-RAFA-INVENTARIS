@@ -50,6 +50,6 @@ class CategoryController extends Controller
 
     public function exportExcel()
     {
-    return Excel::download(new CategoriesExport, 'categories.xlsx');
+    return Excel::download(new CategoriesExport, 'categories.csv');
     }
 }

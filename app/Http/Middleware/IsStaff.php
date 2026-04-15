@@ -10,7 +10,7 @@ class IsStaff
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && in_array(Auth::user()->role, ['staff', 'operator'])) {
+        if (Auth::check() && Auth::user()->role === 'operator') {
             return $next($request);
         }
  

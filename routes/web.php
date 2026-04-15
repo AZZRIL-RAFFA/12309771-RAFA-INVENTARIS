@@ -15,6 +15,12 @@ Route::middleware('guest')->group(function () {
 });
  
 Route::middleware('auth')->group(function () {
+
+    Route::middleware('isStaff')->group(function () {
+        Route::get('/operator/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('operator.dashboard');
+    });
  
     Route::middleware('isAdmin')->group(function () {
         Route::get('/admin/dashboard', function () {
@@ -33,10 +39,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
         Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-       
+ 
+        Route::get('/export-data-admin', [UserController::class, 'exportAdmin'])->name('export.admin');
+        Route::get('/export-data-operator', [UserController::class, 'exportOperator'])->name('export.operator');
     });
  
 
+ 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
  

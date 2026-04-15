@@ -32,7 +32,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'role' => 'required|in:admin,operator,staff'
+            'role' => 'required|in:admin,operator'
         ]);
  
         $emailPrefix = Str::lower(Str::substr($request->email, 0, 4));
@@ -82,12 +82,12 @@ class UserController extends Controller
  
     public function exportAdmin()
     {
-        return Excel::download(new AdminExport, 'admin-accounts.xlsx');
+        return Excel::download(new AdminExport, 'admin-accounts.csv');
     }
  
     public function exportOperator()
     {
-        return Excel::download(new OperatorExport, 'operator-accounts.xlsx');
+        return Excel::download(new OperatorExport, 'operator-accounts.csv');
     }
  
     public function editStaff()
