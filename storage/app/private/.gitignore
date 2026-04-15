@@ -1,0 +1,12 @@
+*
+!.gitignore
+
+<!-- <button type="button" onclick="window.location.href='{{ route('admin.categories.export') }}'"
+class="btn btn-purple px-4 py-2 shadow-sm"
+style="background-color: #00c984; border-radius: 10px; border: none;">
+Export Excel
+</button> -->
+(BUAT NARO EXPORT EXCEL,DI BAGIAN ADMIN CATEGORY TABEL)
+
+# <p class="mb-0 text-muted"><i class="bi bi-calendar3 me-2"></i>{{ date('l, d F Y') }}</p> (jam real time di bagian dashboard welcome back app 1)
+ # <p class="mb-0 text-muted"><i class="bi bi-calendar3 me-2"></i>{{ date('l, d F Y') }}</p>
